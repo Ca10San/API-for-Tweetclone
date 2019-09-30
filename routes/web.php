@@ -79,15 +79,6 @@ $router->get('/usuarios', [function()
     var_dump($_GET);
 }, 'middleware' => 'teste']);
 
-$router->put('/usuarios', function(Request $request)
-{
-    $teste = $request->input('nome');
-    
-    var_dump($teste);
-});
+$router->put('/usuarios/add/{nome}', 'DBController@adicionar');
 
-$router->delete('/usuarios/delete/{id}', function(Request $request,$id)
-{
-    $teste = $request->input('nome');
-    var_dump($teste.'-'.$id);
-});
+$router->delete('/usuarios/delete/{id}', 'DBController@remover');
