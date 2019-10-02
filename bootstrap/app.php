@@ -58,11 +58,12 @@ $app->singleton(
 */
 
 // $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
+    
 // ]);
 
 $app->routeMiddleware([
     'teste' => App\Http\Middleware\TesteMiddleware::class,
+    'auth' => App\Http\Middleware\Authenticate::class
 ]);
 
 /*
@@ -77,7 +78,7 @@ $app->routeMiddleware([
 */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

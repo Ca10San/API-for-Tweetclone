@@ -1,9 +1,16 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Response;
+
+// if (PHP_SAPI != 'cli') 
+// {
+//     // isso aqui verifica se o arquivo ta rodando a partir de um terminal
+//     // cli-server ------servidor
+//     // cli -------terminal
+//     exit('Error 404');
+// }
 
 class TesteMiddleware
 {

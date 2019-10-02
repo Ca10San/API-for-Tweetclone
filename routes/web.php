@@ -40,17 +40,16 @@ $router->get('/lista/{itens:.*}', [function($itens)
 }, 'as' => 'lista']);
 
 // redirect para chamar uma outra  rota com outro nome, nomeada por 'as' no index
-$router->get('/redirecionar',function()
-{
-    return redirect()->route('teste');
-});
-
 
 $router->get('/redirecionarlista',function()
 {
     return redirect()->route('lista',['itens' => 'item1/item2/item3']);
 });
 
+$router->get('/redirecionar',function()
+    {
+        return redirect()->route('teste');
+    });
 
 // para acessar essas rotas é necessário a inclusao do prefixo descito
 // por exemplo : teste_prefixo/teste ou teste_prefixo/prefixo
@@ -67,18 +66,32 @@ $router->group(['prefix' => 'teste_prefixo'],function() use ($router)
     });
 });
 
-$router->post('/usuarios', function(Request $request)
+$router->get('/usuarios', function(Request $request,Response $response)
 {
-    $teste = $request->input('nome');
-    
-    var_dump($teste);
+    $teste = DB::select('select * from tabela_teste');
+    return $teste;
 });
 
-$router->get('/usuarios', [function()
+$router->delete('/usuarios', [function(Request $request)
 {
-    var_dump($_GET);
+    var_dump($request);
 }, 'middleware' => 'teste']);
 
-$router->put('/usuarios/add/{nome}', 'DBController@adicionar');
+$router->put('/criartabela',[function ()
+{
+    return 've la no banco se deu certo!';
+},'uses' => 'DBController@criartabela']);
 
-$router->delete('/usuarios/delete/{id}', 'DBController@remover');
+$router->group(['prefix' => '/API/v1', 'middleware' => 'auth'],function() use ($router)
+{
+    $router->put('/usuarios/add/{nome}', 'DBController@adicionar');
+
+    $router->delete('/usuarios/delete/{id}', 'DBController@remover');
+
+    $router->get('/teste',[function() use ($router){
+        return 'esse é um teste';
+    }, 'as' => 'teste']);   
+});
+
+// chamando a rota de geração de token
+$router->get('/token','AuthController@tokenizer');
