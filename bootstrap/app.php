@@ -57,9 +57,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-    
-// ]);
+$app->middleware([
+   App\Http\Middleware\CorsMiddleware::class
+]);
 
 $app->routeMiddleware([
     'teste' => App\Http\Middleware\TesteMiddleware::class,

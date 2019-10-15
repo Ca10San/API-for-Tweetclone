@@ -54,7 +54,7 @@ class DBController extends Controller
         $token = DB::table('tabela_teste')
                         ->select('token')
                         ->whereRaw('email = ?',$request->header('email'))
-                        ->whereRaw('senha = ?',$request->header('password'))
+                        ->whereRaw('senha = ?',$request->header('pass'))
                         ->first();
         
         if($token == '' || $token == null){
@@ -70,7 +70,7 @@ class DBController extends Controller
     {
         DB::table('tabela_teste')
             ->whereRaw('email = ?',$request->header('email'))
-            ->whereRaw('senha = ?',$request->header('password'))
+            ->whereRaw('senha = ?',$request->header('pass'))
             ->update(['token' => $token]);
     }
 
@@ -80,7 +80,7 @@ class DBController extends Controller
         $token = DB::table('tabela_teste')
                         ->select('token')
                         ->whereRaw('email = ?',$request->header('email'))
-                        ->whereRaw('senha = ?',$request->header('password'))
+                        ->whereRaw('senha = ?',$request->header('pass'))
                         ->get();
         return json_encode($token[0]);
     }

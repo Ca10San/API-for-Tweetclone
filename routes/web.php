@@ -21,7 +21,8 @@ $router->get('/', function() use ($router)
 
 // o index 'as' da rota define um nome para router que pode ser chamado por redirect posteriormente
 $router->get('/teste',[function() use ($router){
-    return 'esse é um teste';
+    $array = array("teste" => "esse é um teste");
+    return response()->json($array);
 }, 'as' => 'teste']);
 
 // o {} torna variavel a inserção do id
@@ -89,7 +90,8 @@ $router->group(['prefix' => '/API/v1', 'middleware' => 'auth'],function() use ($
     $router->delete('/usuarios/delete/{id}', 'DBController@remover');
 
     $router->get('/teste',[function() use ($router){
-        return 'esse é um teste';
+        $array = array("teste" => "esse é um teste");
+        return response()->json($array);
     }, 'as' => 'teste']);   
 });
 
