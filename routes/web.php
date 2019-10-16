@@ -16,8 +16,30 @@ use Illuminate\Http\Response;
 
 $router->get('/', function() use ($router)
 {
-    return $router->app->version();
+    return response('Welcome to Tweetclone API, go get your token in /token!');
 });
+
+// Calling JWT Token Generator
+$router->get('/token','AuthController@tokenizer');
+
+// Creating an user
+$router->post('/users/register','UserController@register');
+
+$router->group(['prefix' => '/API', 'middleware' => 'auth'],function() use ($router)
+{
+    $router->put('/usuarios/add/{nome}', 'DBController@adicionar');
+
+    $router->delete('/usuarios/delete/{id}', 'DBController@remover');
+
+    $router->get('/teste',[function() use ($router){
+        $array = array("teste" => "esse é um teste");
+        return response()->json($array);
+    }, 'as' => 'teste']);   
+});
+
+
+
+
 
 // o index 'as' da rota define um nome para router que pode ser chamado por redirect posteriormente
 $router->get('/teste',[function() use ($router){
@@ -69,7 +91,7 @@ $router->group(['prefix' => 'teste_prefixo'],function() use ($router)
 
 $router->get('/usuarios', function(Request $request,Response $response)
 {
-    $teste = DB::select('select * from tabela_teste');
+    $teste = DB::select('select * from usuarios');
     return $teste;
 });
 
@@ -83,17 +105,4 @@ $router->put('/criartabela',[function ()
     return 've la no banco se deu certo!';
 },'uses' => 'DBController@criartabela']);
 
-$router->group(['prefix' => '/API/v1', 'middleware' => 'auth'],function() use ($router)
-{
-    $router->put('/usuarios/add/{nome}', 'DBController@adicionar');
 
-    $router->delete('/usuarios/delete/{id}', 'DBController@remover');
-
-    $router->get('/teste',[function() use ($router){
-        $array = array("teste" => "esse é um teste");
-        return response()->json($array);
-    }, 'as' => 'teste']);   
-});
-
-// chamando a rota de geração de token
-$router->get('/token','AuthController@tokenizer');

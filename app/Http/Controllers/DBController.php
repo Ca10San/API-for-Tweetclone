@@ -12,9 +12,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 
 class DBController extends Controller
 {
@@ -23,27 +21,18 @@ class DBController extends Controller
      *
      * @return void
      */
-    public function criartabela(){
-        Schema::dropIfExists('tabela_teste23232').
-        
-        Schema::create('tabela_teste23232', function (Blueprint $table){
-            $table->increments('id');
-            $table->string('nome_teste');
-            $table->integer('idade');
-        });
-    }
 
     public function adicionar(Request $request,$nome)
     {
         $teste = $request->input('nome');
-        DB::table('tabela_teste')->insert(['teste' => $nome]);
+        DB::table('usuarios')->insert(['teste' => $nome]);
         var_dump($teste);
     }
 
     public function remover(Request $request,$id)
     {
         $teste = $request->input('nome');
-        DB::table('tabela_teste')->where('id','=',$id)->delete();
+        DB::table('usuarios')->where('id','=',$id)->delete();
         var_dump($teste.'-'.$id);
     }
 
@@ -51,7 +40,7 @@ class DBController extends Controller
     // returns false if the user do not have a token
     public function checkToken(Request $request)
     {
-        $token = DB::table('tabela_teste')
+        $token = DB::table('usuarios')
                         ->select('token')
                         ->whereRaw('email = ?',$request->header('email'))
                         ->whereRaw('senha = ?',$request->header('pass'))
@@ -68,7 +57,7 @@ class DBController extends Controller
     // na linha do usuario informado no request
     public function recordToken(Request $request,$token)
     {
-        DB::table('tabela_teste')
+        DB::table('usuarios')
             ->whereRaw('email = ?',$request->header('email'))
             ->whereRaw('senha = ?',$request->header('pass'))
             ->update(['token' => $token]);
@@ -77,7 +66,7 @@ class DBController extends Controller
     // retorna o Token do usuario que esta gravado no banco de dados
     public function returnToken(Request $request)
     {
-        $token = DB::table('tabela_teste')
+        $token = DB::table('usuarios')
                         ->select('token')
                         ->whereRaw('email = ?',$request->header('email'))
                         ->whereRaw('senha = ?',$request->header('pass'))
@@ -89,7 +78,7 @@ class DBController extends Controller
     public function compareToken(Request $request)
     {
         // buscando no banco de dados o token
-        $token = DB::table('tabela_teste')
+        $token = DB::table('usuarios')
                         ->select('token')
                         ->whereRaw('token = ?',$request->header('Api-Token'))
                         ->first();
