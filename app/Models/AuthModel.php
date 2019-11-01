@@ -18,6 +18,7 @@ class AuthModel
         $this->request = $request;
         $this->pass = $this->request->header('password');
         $this->email = $this->request->header('email');
+        
     }
 
     // os métodos abaixo chamam o TokenModel
@@ -28,10 +29,22 @@ class AuthModel
         return $token->generateToken($this->request);
     }
 
+    public function checkToken()
+    {
+        $db = new DBController;
+        return $db->checkToken($this->request);
+    }
+
     public function returnToken()
     {
         $db = new DBController;
         return $db->returnToken($this->request);
+    }
+
+    public function compareToken()
+    {
+        $db = new DBController;
+        return $db->compareToken($this->request);
     }
 }
 ?>

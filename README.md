@@ -84,7 +84,9 @@ Send your token in a header of all others Requests
     URL : ''**www.myapp.com/anyrequest**'',
     Method : ''GET'',
     Headers : new Headers{
-        token : 9abf9cd286df39c9687d26fc95d75a61
+        token : 9abf9cd286df39c9687d26fc95d75a61,
+        otherheader : anyotherinformation,
+        otherheader2 : anyotherinformation2
     }
 }
 ```

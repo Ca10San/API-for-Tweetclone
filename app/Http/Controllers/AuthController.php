@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Models\AuthModel;
-use App\Http\Controllers\DBController;
+use App\Models\TokenModel;
 
 
 class AuthController extends Controller
@@ -28,19 +28,20 @@ class AuthController extends Controller
     // vindo do AuthModel
     public function tokenizer(Request $request)
     {
-        $db = new DBController;
-        $auth = new AuthModel($request); 
-        if ($db->checkToken($request)){
-            return $auth->returnToken();
-        }else{
-            return  $auth->createToken();
-        }
+        $token = new TokenModel($request);
+        return $token->generateToken($request);
+    }
+    
+    public function token(Request $request)
+    {
+        $auth = new AuthModel($request);
+        return $auth->checkToken();
     }
 
     public function verifyAuth(Request $request)
     {
-        $db = new DBController;
-        if ($db->compareToken($request)) {
+        $auth = new AuthModel($request);
+        if ($auth->compareToken()) {
             return true;
         }else{
             return false;

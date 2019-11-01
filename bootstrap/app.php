@@ -62,7 +62,6 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    'teste' => App\Http\Middleware\TesteMiddleware::class,
     'auth' => App\Http\Middleware\Authenticate::class
 ]);
 

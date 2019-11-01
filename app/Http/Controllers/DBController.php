@@ -40,17 +40,19 @@ class DBController extends Controller
     // returns false if the user do not have a token
     public function checkToken(Request $request)
     {
-        $token = DB::table('usuarios')
-                        ->select('token')
-                        ->whereRaw('email = ?',$request->header('email'))
-                        ->whereRaw('senha = ?',$request->header('pass'))
-                        ->first();
+        $token = $this->returnToken($request);
+        return response()->json($token);
         
-        if($token == '' || $token == null){
-            return false;
-        }else{
-            return true;
-        }
+        // if($token == '' || $token == null){
+        //     // the response will return this
+        //     return response()->json([
+        //         'Status' => 'Error',
+        //         'ERROR' => "Email or password do not exist or are wrong"
+        //     ],401);
+        // }else{
+        //     // if token passed in headers by request do exist in DB
+        //     return response('teste');
+        // }
     }
 
     // grava no banco de dados o Token gerado
@@ -59,8 +61,9 @@ class DBController extends Controller
     {
         DB::table('usuarios')
             ->whereRaw('email = ?',$request->header('email'))
-            ->whereRaw('senha = ?',$request->header('pass'))
+            ->whereRaw('senha = ?',md5($request->header('pass')))
             ->update(['token' => $token]);
+        return true;
     }
 
     // retorna o Token do usuario que esta gravado no banco de dados
@@ -69,9 +72,9 @@ class DBController extends Controller
         $token = DB::table('usuarios')
                         ->select('token')
                         ->whereRaw('email = ?',$request->header('email'))
-                        ->whereRaw('senha = ?',$request->header('pass'))
-                        ->get();
-        return json_encode($token[0]);
+                        ->whereRaw('senha = ?',md5($request->header('pass')))
+                        ->first();
+        return $token;
     }
 
     // compara o token informado com o que esta gravado no banco
