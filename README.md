@@ -33,7 +33,7 @@ You will need to send via **POST** method: **admin**, **pass** and **nome** to r
 }
 ```
 
-#### Response (Is going to be implemented)
+#### Response
 
 If success
 ```
@@ -85,8 +85,8 @@ Send your token in a header of all others Requests
     Method : ''GET'',
     Headers : new Headers{
         token : 9abf9cd286df39c9687d26fc95d75a61,
-        otherheader : anyotherinformation,
-        otherheader2 : anyotherinformation2
+        otherheader : any other data,
+        otherheader2 : any other data2
     }
 }
 ```
