@@ -18,10 +18,12 @@ class TokenModel
         $this->tokenizer = array(
             "email" => $request->header('email'),
             "pass" => $request->header('pass'),
-            "nome" => $request->header('nome')
+            "nome" => $request->header('nome'),
+            "date" => time()
         );
     }
 
+    // Aqui eu uso o JWT para codificar o token
     public function generateToken(Request $request)
     {
         $tokenizer = JWT::encode($this->tokenizer,$this->secretKey);

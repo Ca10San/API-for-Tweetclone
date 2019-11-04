@@ -31,9 +31,9 @@ $router->group(['prefix' => '/API', 'middleware' => 'auth'],function() use ($rou
 {   
     // group for functions relationed to users
     $router->group(['prefix' => '/users'],function()use($router){
-        $router->put('/follow/{id}', 'DBController@follow');
+        $router->put('/follow/{nome}', 'DBController@follow');
 
-        $router->delete('/unfollow/{id}', 'DBController@unfollow');
+        $router->delete('/unfollow/{nome}', 'DBController@unfollow');
     });
 
     

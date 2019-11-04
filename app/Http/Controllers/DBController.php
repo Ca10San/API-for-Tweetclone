@@ -36,25 +36,6 @@ class DBController extends Controller
         var_dump($teste.'-'.$id);
     }
 
-    // returns true if the user have a token
-    // returns false if the user do not have a token
-    public function checkToken(Request $request)
-    {
-        $token = $this->returnToken($request);
-        return response()->json($token);
-        
-        // if($token == '' || $token == null){
-        //     // the response will return this
-        //     return response()->json([
-        //         'Status' => 'Error',
-        //         'ERROR' => "Email or password do not exist or are wrong"
-        //     ],401);
-        // }else{
-        //     // if token passed in headers by request do exist in DB
-        //     return response('teste');
-        // }
-    }
-
     // grava no banco de dados o Token gerado
     // na linha do usuario informado no request
     public function recordToken(Request $request,$token)
@@ -74,7 +55,7 @@ class DBController extends Controller
                         ->whereRaw('email = ?',$request->header('email'))
                         ->whereRaw('senha = ?',md5($request->header('pass')))
                         ->first();
-        return $token;
+        return response()->json($token);
     }
 
     // compara o token informado com o que esta gravado no banco
@@ -91,6 +72,41 @@ class DBController extends Controller
         }else{
             return true;
         }
+    }
+
+    public function checkEmail(Request $request){
+        $emailChecked = DB::table('usuarios')
+                            ->select('email')
+                            ->whereRaw('email = ?',$request->header('email'))
+                            ->first();
+        
+        if($emailChecked == '' || $emailChecked == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function checkName(Request $request){
+        $nameChecked = DB::table('usuarios')
+                            ->select('nome')
+                            ->whereRaw('nome = ?',$request->header('nome'))
+                            ->first();
+        
+        if($nameChecked == '' || $nameChecked == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function registerUser(Request $request){
+        DB::table('usuarios')
+            ->insert([
+                'nome' => $request->header('nome'), 
+                'senha' => md5($request->header('pass')), 
+                'email' => $request->header('email')]
+            );
     }
 }
 

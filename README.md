@@ -38,7 +38,7 @@ You will need to send via **POST** method: **admin**, **pass** and **nome** to r
 If success
 ```
 {
-    Status : OK,
+    Status : Registered,
     Token : 9abf9cd286df39c9687d26fc95d75a61
 }
 ```

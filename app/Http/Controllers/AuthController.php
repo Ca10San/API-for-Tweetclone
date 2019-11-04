@@ -35,7 +35,7 @@ class AuthController extends Controller
     public function token(Request $request)
     {
         $auth = new AuthModel($request);
-        return $auth->checkToken();
+        return $auth->returnToken();
     }
 
     public function verifyAuth(Request $request)
