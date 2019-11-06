@@ -10,7 +10,7 @@ namespace App\Http\Controllers;
 //     exit('Error 404');
 // }
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Models\AuthModel;
@@ -36,16 +36,6 @@ class AuthController extends Controller
     {
         $auth = new AuthModel($request);
         return $auth->returnToken();
-    }
-
-    public function verifyAuth(Request $request)
-    {
-        $auth = new AuthModel($request);
-        if ($auth->compareToken()) {
-            return true;
-        }else{
-            return false;
-        }
     }
 }
 ?>

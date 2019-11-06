@@ -9,24 +9,27 @@ use App\Http\Controllers\DBController;
 
 class AuthModel
 {
-    private $pass;
-    private $email;
     private $request;
 
     public function __construct(Request $request)
     {
+        $this->setRequest($request);        
+    }
+
+    public function getRequest(){
+        return $this->request;
+    }
+
+    public function setRequest(Request $request){
         $this->request = $request;
-        $this->pass = $this->request->header('password');
-        $this->email = $this->request->header('email');
-        
     }
 
     // os métodos abaixo chamam o TokenModel
     // Para gerar os Tokens ou buscar os Tokens criados pelos usuarios
     public function createToken()
     {
-        $token = new TokenModel();
-        return $token->generateToken($this->request);
+        $token = new TokenModel($this->getRequest());
+        return $token->generateToken($this->getRequest());
     }
 
     public function checkToken()

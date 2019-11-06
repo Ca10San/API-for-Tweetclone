@@ -36,17 +36,20 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (!is_null($request->header('Api-Token'))) {
-            $tokenModel = new TokenModel();
-            if($tokenModel->checkToken($request)){
-                return $next($request);
+        try{
+            if (!is_null($request->header('Api-Token'))) {
+                $tokenModel = new TokenModel($request);
+                if($tokenModel->checkToken($request)){
+                    return $next($request);
+                }else{
+                    return response()->json(['Status' => 'Unauthorized.'], 401);
+                };
             }else{
                 return response()->json(['Status' => 'Unauthorized.'], 401);
-            };
-        }else{
-            return response()->json(['Status' => 'Unauthorized.'], 401);
+            }
+        }catch(Exception $e){
+            return response("Erro: ".$e->getMessage()."\n",400);
         }
-    
         // if ($this->auth->guard($guard)->guest()) {
         //     return response()->json(['Status' => 'Unauthorized.'], 401);
         // }

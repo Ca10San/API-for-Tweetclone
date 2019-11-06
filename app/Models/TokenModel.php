@@ -2,41 +2,54 @@
 
 namespace App\Models;
     
-use Illuminate\Http\Request as Request;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\DBController;
+use Exception;
 use Firebase\JWT\JWT;
 
 class TokenModel
 {
-    private $secretKey;
     private $tokenizer;
 
-    public function __constructor(Request $request)
+    public function __construct(Request $request)
     {
-        $this->secretKey = '8e74ceaf980d99078e9f2c60dc00cc813db40b72c370b80ed1d21203df93e5e4';
-        $this->tokenizer = array(
-            "email" => $request->header('email'),
-            "pass" => $request->header('pass'),
-            "nome" => $request->header('nome'),
-            "date" => time()
-        );
+        // double md5 hashing, why not?
+        $this->setTokenizer(md5(md5("{$request->header('email')}{$request->header('pass')}{$request->header('nome')}")));  
     }
 
-    // Aqui eu uso o JWT para codificar o token
+    private function setTokenizer($value)
+    {
+        $this->tokenizer = $value;
+    }
+
+    private function getTokenizer()
+    {
+        return $this->tokenizer;
+    }
+
     public function generateToken(Request $request)
     {
-        $tokenizer = JWT::encode($this->tokenizer,$this->secretKey);
-        $db = new DBController;
-        if ($db->recordToken($request,$tokenizer)) {
-            return response()->json([
-                'Status' => 'Registered',
-                'token' => $tokenizer
-            ]);    
-        } else {
-            return response()->json([
-                "error" => "An errer occurred during token register"
-            ], 400);
+        try{
+            $db = new DBController;
+            if ($this->tokenizer != null) {
+                if ($db->recordToken($request,$this->getTokenizer())) {
+                    return response()->json([
+                        'Status' => 'Registered',
+                        'token' => $this->getTokenizer()
+                    ]);    
+                } else {
+                    return response()->json([
+                        "error" => "An errer occurred during token register"
+                    ], 400);
+                }
+            } else {
+                return response()->json([
+                    "error" => "An errer occurred during token generation",
+                ], 400);
+            }
+        }catch(Exception $e){
+            return response("Erro: ".$e->getMessage()."\n",400);
         }
     }
 

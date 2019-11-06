@@ -15,9 +15,10 @@ use Illuminate\Http\Response;
 */
 
 // first contact with the API
+
 $router->get('/', function() use ($router)
 {
-    return response('Welcome to Tweetclone API, register yourself into /users/register and get your token, if have you already registered go directly in /token instead!', phpinfo());
+    return response('Welcome to Tweetclone API, register yourself into /users/register and get your token, if have you already registered go directly in /token instead!');
 });
 
 // returns the Token
@@ -31,9 +32,9 @@ $router->group(['prefix' => '/API', 'middleware' => 'auth'],function() use ($rou
 {   
     // group for functions relationed to users
     $router->group(['prefix' => '/users'],function()use($router){
-        $router->put('/follow/{nome}', 'DBController@follow');
+        $router->put('/follow/{name}', 'UserController@follow');
 
-        $router->delete('/unfollow/{nome}', 'DBController@unfollow');
+        $router->delete('/unfollow/{name}', 'UserController@unfollow');
     });
 
     
@@ -41,7 +42,6 @@ $router->group(['prefix' => '/API', 'middleware' => 'auth'],function() use ($rou
         return response()->json(["teste" => "voce esta autenticado"]);
     }]); 
 });
-
 
 // EVERYTHING BELOW IS JUST ANNOTATIONS
 
