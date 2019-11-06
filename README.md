@@ -19,14 +19,14 @@ Works like any other API accepts: GET, POST, DELETE and UPDATE methods
 
 #### Request
 
-You will need to send via **POST** method: **admin**, **pass** and **nome** to register
+You will need to send via **POST** method: **email**, **pass** and **nome** to register
 
 ```
 {
     URL : ''**www.myapp.com/users/register**'',
     Method : ''POST'',
     Headers : new Headers{
-        admin : ''**your email**'',
+        email : ''**your email**'',
         pass : ''**your password**'',
         name : ''**your nickname**''
     }
@@ -83,11 +83,60 @@ Send your token in a header of all others Requests
 {
     URL : ''**www.myapp.com/anyrequest**'',
     Method : ''GET'',
-    Headers : new Headers{
-        token : 9abf9cd286df39c9687d26fc95d75a61,
+    Headers : {
+        Api-Token : 9abf9cd286df39c9687d26fc95d75a61,
         otherheader : any other data,
         otherheader2 : any other data2
     }
 }
 ```
 
+### Using the API functionality
+
+#### Following Users
+
+##### Request
+Send this request with **PUT** method with your **Api-Token** in header
+
+```
+{
+    URL : ''**www.myapp.com/API/users/follow/{user name}'',
+    Method : ''PUT'',
+    Headers : {
+        Api-Token : 9abf9cd286df39c9687d26fc95d75a61
+    }
+}
+```
+
+##### Response
+If everything was done right you will get this
+
+```
+{
+    Status : Success
+}
+```
+
+#### Unfollowing Users
+
+##### Request
+Send this request with **DELETE** method with your **Api-Token** in header
+
+```
+{
+    URL : ''**www.myapp.com/API/users/unfollow/{user name}'',
+    Method : ''DELETE'',
+    Headers : {
+        Api-Token : 9abf9cd286df39c9687d26fc95d75a61
+    }
+}
+```
+
+##### Response
+If everything was done right you will get this
+
+```
+{
+    Status : Success
+}
+```
